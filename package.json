@@ -20,10 +20,10 @@
         "prepare": "npm run build && npm run tscheck"
     },
     "peerDependencies": {
-        "mobx-state-tree": ">=5.x",
-        "mobx-devtools-mst": ">=0.9.x",
-        "react": ">=16.x",
-        "mobx": ">=5.x"
+        "mobx-state-tree": "^5",
+        "mobx-devtools-mst": "^0.9",
+        "react": "^16",
+        "mobx": "^5",
     },
     "devDependencies": {
         "@babel/cli": "^7.8.4",
