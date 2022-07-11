@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ES6",
+    "declaration": true,
+    "declarationMap": true,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declarationDir": "./dist/dts",
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

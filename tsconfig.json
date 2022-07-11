@@ -1,27 +1,6 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-   "target": "ES2019",
-    "lib": [
-      "ES2019",
-      "DOM"
-    ],
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "module": "CommonJS",
-    "declaration": true,
-    "declarationMap": true,
-    "noEmitOnError": true,
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "declarationDir": "./dist/dts",
-    "jsx": "react-jsx"
-  },
-  "include": [
-    "src/**/*"
-  ]
+    "forceConsistentCasingInFileNames": true,
+  }
 }
