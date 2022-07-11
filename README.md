@@ -1,7 +1,15 @@
+    "scripts": {
+      "build": "rimraf dist &&",
+      "type-check": "tsc --project tsconfig.json",
+      "codestyle-format": "prettier --write",
+      "codestyle-check": "prettier --check",
+      "prepare": "npm run build && npm run tscheck"
+    },
 # List of peer dependencies:
--   "mobx-state-tree": "^3.x", 
--   "mobx-devtools-mst": "^0.9.x",
--   "react": "^16.x"
+- mobx-state-tree: "^5",
+- mobx-devtools-mst: "^0.9",
+- react: "^17",
+- mobx: "^6",
 
 # How to install
 
@@ -10,7 +18,7 @@
 
 # How to create store 
 
-```ts
+```js
 // Import package
 import { configureStore } from 'mst-storebooster';
 

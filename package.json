@@ -1,107 +1,52 @@
 {
-    "name": "mst-storebooster",
-    "version": "1.0.0",
-    "authors": {
-        "name": "Zakhar Kononov",
-        "email": "zorgizorgik@gmail.com"
-    },
-    "license": "MIT",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "files": [
-        "dist/index.js",
-        "dist/index.d.ts",
-        "README.md"
-    ],
-    "scripts": {
-        "build": "rimraf dist && babel index.ts --out-dir dist --extensions '.ts'",
-        "lint": "eslint --fix index.ts",
-        "tscheck": "tsc --project tsconfig.json",
-        "prepare": "npm run build && npm run tscheck"
-    },
-    "peerDependencies": {
-        "mobx-state-tree": "^5",
-        "mobx-devtools-mst": "^0.9",
-        "react": "^16",
-        "mobx": "^5",
-    },
-    "devDependencies": {
-        "@babel/cli": "^7.8.4",
-        "@babel/core": "^7.9.6",
-        "@babel/plugin-transform-typescript": "^7.12.1",
-        "@babel/preset-env": "^7.12.1",
-        "@babel/preset-react": "^7.12.1",
-        "@types/mobx-devtools-mst": "^0.9.7",
-        "@types/node": "^14.14.6",
-        "@types/react": "^16.9.55",
-        "@typescript-eslint/eslint-plugin": "^4.6.0",
-        "@typescript-eslint/parser": "^4.6.0",
-        "core-js": "^3.6.5",
-        "eslint": "^7.12.1",
-        "eslint-config-airbnb": "^18.2.0",
-        "eslint-config-prettier": "^6.15.0",
-        "eslint-plugin-import": "^2.22.1",
-        "eslint-plugin-jsx-a11y": "^6.4.1",
-        "eslint-plugin-react": "^7.21.5",
-        "eslint-plugin-react-hooks": "^4.0.0",
-        "husky": "^4.3.0",
-        "lint-staged": "^10.5.1",
-        "mobx": "^6.1.5",
-        "mobx-devtools-mst": "^0.9.25",
-        "mobx-state-tree": "^5.0.1",
-        "react": "^17.0.1",
-        "rimraf": "^3.0.2",
-        "typescript": "^3.9.7"
-    },
-    "babel": {
-        "presets": [
-            [
-                "@babel/preset-env",
-                {
-                    "useBuiltIns": "entry",
-                    "corejs": "core-js@3",
-                    "targets": {
-                        "browsers": "> 0.25%, not dead, not ie > 0"
-                    }
-                }
-            ],
-            "@babel/preset-react"
-        ],
-        "plugins": [
-            "@babel/plugin-transform-typescript"
-        ]
-    },
-    "eslintConfig": {
-        "root": true,
-        "parser": "@typescript-eslint/parser",
-        "plugins": [
-            "@typescript-eslint"
-        ],
-        "extends": [
-            "airbnb",
-            "plugin:@typescript-eslint/recommended",
-            "prettier"
-        ],
-        "rules": {
-            "@typescript-eslint/ban-ts-ignore": "off",
-            "import/prefer-default-export": "off",
-            "@typescript-eslint/ban-ts-comment": "off",
-            "react/prop-types": "off"
-        }
-    },
-    "eslintIgnore": [
-        "node_modules",
-        "dist",
-        "build"
-    ],
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm run lint && npm run tscheck"
-        }
-    },
-    "lint-staged": {
-        "index.ts": [
-            "eslint --fix"
-        ]
-    }
+  "name": "mst-storebooster",
+  "version": "1.1.0",
+  "packageManager": "yarn@4.0.0-rc.11",
+  "authors": {
+    "name": "Zakhar Kononov",
+    "email": "zorgizorgik@gmail.com"
+  },
+  "license": "MIT",
+  "main": "dist/index",
+  "types": "dist/dts/index",
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts",
+    "README.md"
+  ],
+  "scripts": {
+    "type-check": "tsc",
+    "codestyle-format": "prettier --write",
+    "codestyle-check": "prettier --check",
+    "build": "tsc --build ./tsconfig.build.json"
+  },
+  "peerDependencies": {
+    "mobx": "^6",
+    "mobx-devtools-mst": "^0.9",
+    "mobx-state-tree": "^5",
+    "react": "^18"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@types/eslint": "^8",
+    "@types/node": "^18.0.3",
+    "@types/prettier": "^2",
+    "@types/react": "^18",
+    "@types/rimraf": "^3",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "eslint": "^8.19.0",
+    "lint-staged": "^13.0.3",
+    "mobx": "^6.6.1",
+    "mobx-devtools-mst": "^0.9.30",
+    "mobx-state-tree": "^5.1.5",
+    "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.4"
+  }
 }

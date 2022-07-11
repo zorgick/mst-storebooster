@@ -1,28 +1,27 @@
 {
-    "compilerOptions": {
-        "target": "es2015",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
-        "esModuleInterop": true,
-        "isolatedModules": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "resolveJsonModule": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "outDir": "dist",
-        "jsx": "react",
-        "baseUrl": "."
-    },
-    "include": [
-        "./index.ts"
-    ]
+  "compilerOptions": {
+   "target": "ES2019",
+    "lib": [
+      "ES2019",
+      "DOM"
+    ],
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "module": "CommonJS",
+    "declaration": true,
+    "declarationMap": true,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declarationDir": "./dist/dts",
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
