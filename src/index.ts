@@ -1,6 +1,6 @@
-import React from 'react';
-import makeInspectable from 'mobx-devtools-mst';
-import { IAnyModelType, Instance } from 'mobx-state-tree';
+import React from "react";
+import makeInspectable from "mobx-devtools-mst";
+import { IAnyModelType, Instance } from "mobx-state-tree";
 
 /*
  * Generic Types:
@@ -14,75 +14,76 @@ import { IAnyModelType, Instance } from 'mobx-state-tree';
  *  that must be accessible through the store bus
  */
 export const configureStore = <
-    GenRootStoreModel extends Instance<IAnyModelType>,
-    GenStoreEnv extends Record<string, unknown>,
-    GenInstantiatedStoresBox extends Record<string, unknown>,
-    GenBus extends Record<string, unknown>
+  GenRootStoreModel extends Instance<IAnyModelType>,
+  GenStoreEnv extends Record<string, unknown>,
+  GenInstantiatedStoresBox extends Record<string, unknown>,
+  GenBus extends Record<string, unknown>
 >({
-    RootStore,
-    InstantiatedStoresBox,
-    Bus,
+  RootStore,
+  InstantiatedStoresBox,
+  Bus,
+  ExecutionEnv = "production",
 }: {
-    RootStore: IAnyModelType;
-    InstantiatedStoresBox: GenInstantiatedStoresBox;
-    Bus: GenBus;
+  RootStore: IAnyModelType;
+  InstantiatedStoresBox: GenInstantiatedStoresBox;
+  Bus: GenBus;
+  ExecutionEnv?: "development" | "production";
 }): {
-    rootStore: GenRootStoreModel;
-    StoreContext: React.Context<GenRootStoreModel | null>;
-    StoreProvider: React.FC<{ children: React.ReactNode }>;
-    useStore: () => GenRootStoreModel | null;
-    useInject: (mapStore: <GenReturn>(store: GenRootStoreModel) => GenReturn) => void;
+  rootStore: GenRootStoreModel;
+  StoreContext: React.Context<GenRootStoreModel | null>;
+  StoreProvider: React.FC<{ children: React.ReactNode }>;
+  useStore: () => GenRootStoreModel | null;
+  useInject: (mapStore: <GenReturn>(store: GenRootStoreModel) => GenReturn) => void;
 } => {
-    // for now it will be a function with its own scope
-    const createStore = (): GenRootStoreModel => {
-        // @ts-ignore
-        const env: GenStoreEnv = {
-            ...Bus,
-        };
-
-        const rootStore: GenRootStoreModel = RootStore.create(
-            {
-                ...InstantiatedStoresBox,
-            },
-            env,
-        );
-
-        return rootStore;
-    };
-    const rootStore = createStore();
-
-    // React utils
-    const StoreContext = React.createContext<GenRootStoreModel | null>(null);
-    const { NODE_ENV } = process && process.env;
-
-    const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-        if (!children) {
-            throw new Error('Provider cannot be mounted without React Element inside');
-        }
-        if (NODE_ENV !== 'production') {
-            makeInspectable(rootStore as Record<string, unknown>);
-        }
-        return React.createElement(
-            StoreContext.Provider,
-            {
-                value: rootStore,
-            },
-            children,
-        );
+  // for now it will be a function with its own scope
+  const createStore = (): GenRootStoreModel => {
+    // @ts-ignore
+    const env: GenStoreEnv = {
+      ...Bus,
     };
 
-    const useStore = (): GenRootStoreModel => {
-        const value = React.useContext(StoreContext);
-        if (!value) {
-            throw new Error('useStore must be used within a StoreProvider. Please, add context!');
-        }
-        return value;
-    };
+    const rootStore: GenRootStoreModel = RootStore.create(
+      {
+        ...InstantiatedStoresBox,
+      },
+      env
+    );
 
-    // type MapStore<GenReturn> = (store: GenRootStoreModel) => GenReturn;
-    type MapStore<GenReturn> = (store: any) => GenReturn;
+    return rootStore;
+  };
+  const rootStore = createStore();
 
-    /**
+  // React utils
+  const StoreContext = React.createContext<GenRootStoreModel | null>(null);
+
+  const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    if (!children) {
+      throw new Error("Provider cannot be mounted without React Element inside");
+    }
+    if (ExecutionEnv !== "production") {
+      makeInspectable(rootStore as Record<string, unknown>);
+    }
+    return React.createElement(
+      StoreContext.Provider,
+      {
+        value: rootStore,
+      },
+      children
+    );
+  };
+
+  const useStore = (): GenRootStoreModel => {
+    const value = React.useContext(StoreContext);
+    if (!value) {
+      throw new Error("useStore must be used within a StoreProvider. Please, add context!");
+    }
+    return value;
+  };
+
+  // type MapStore<GenReturn> = (store: GenRootStoreModel) => GenReturn;
+  type MapStore<GenReturn> = (store: any) => GenReturn;
+
+  /**
        * It is a simple property picker, same as
        * redux selector (memoization is handled by MST itself)
        * **NOTE!** Define a mapStore function beforehand.
@@ -98,18 +99,18 @@ export const configureStore = <
         ...
         const {someDataForComponent} = useInject(mapStore);
        */
-    const useInject = <GenReturn>(mapStore: MapStore<GenReturn>) => {
-        const store = useStore();
-        return mapStore(store);
-    };
+  const useInject = <GenReturn>(mapStore: MapStore<GenReturn>) => {
+    const store = useStore();
+    return mapStore(store);
+  };
 
-    const storeStruct = {
-        rootStore,
-        StoreContext,
-        StoreProvider,
-        useStore,
-        useInject,
-    };
+  const storeStruct = {
+    rootStore,
+    StoreContext,
+    StoreProvider,
+    useStore,
+    useInject,
+  };
 
-    return storeStruct;
+  return storeStruct;
 };
