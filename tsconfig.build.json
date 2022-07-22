@@ -1,11 +1,10 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "module": "ES6",
+    "module": "CommonJS",
     "declaration": true,
     "declarationMap": true,
     "noEmitOnError": true,
-    "sourceMap": true,
     "skipLibCheck": true,
     "rootDir": "./src",
     "outDir": "./dist",

@@ -1,6 +1,6 @@
 {
   "name": "mst-storebooster",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "packageManager": "yarn@4.0.0-rc.11",
   "authors": {
     "name": "Zakhar Kononov",
