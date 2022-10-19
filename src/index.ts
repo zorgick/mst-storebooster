@@ -1,4 +1,5 @@
-import React from "react";
+import type { FC, Context, ReactNode } from "react";
+import { createContext, createElement, useContext } from "react";
 import makeInspectable from "mobx-devtools-mst";
 import { IAnyModelType, Instance } from "mobx-state-tree";
 
@@ -15,7 +16,6 @@ import { IAnyModelType, Instance } from "mobx-state-tree";
  */
 export const configureStore = <
   GenRootStoreModel extends Instance<IAnyModelType>,
-  GenStoreEnv extends Record<string, unknown>,
   GenInstantiatedStoresBox extends Record<string, unknown>,
   GenBus extends Record<string, unknown>
 >({
@@ -30,15 +30,13 @@ export const configureStore = <
   ExecutionEnv?: "development" | "production";
 }): {
   rootStore: GenRootStoreModel;
-  StoreContext: React.Context<GenRootStoreModel | null>;
-  StoreProvider: React.FC<{ children: React.ReactNode }>;
+  StoreContext: Context<GenRootStoreModel | null>;
+  StoreProvider: FC<{ children: ReactNode, customStore?: GenRootStoreModel }>;
   useStore: () => GenRootStoreModel | null;
-  useInject: (mapStore: <GenReturn>(store: GenRootStoreModel) => GenReturn) => void;
 } => {
   // for now it will be a function with its own scope
   const createStore = (): GenRootStoreModel => {
-    // @ts-ignore
-    const env: GenStoreEnv = {
+    const env = {
       ...Bus,
     };
 
@@ -54,54 +52,30 @@ export const configureStore = <
   const rootStore = createStore();
 
   // React utils
-  const StoreContext = React.createContext<GenRootStoreModel | null>(null);
+  const StoreContext = createContext<GenRootStoreModel | null>(null);
 
-  const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const StoreProvider = ({ children, customStore }: { children: ReactNode, customStore?: GenRootStoreModel }) => {
     if (!children) {
       throw new Error("Provider cannot be mounted without React Element inside");
     }
-    if (ExecutionEnv !== "production") {
+    if (ExecutionEnv === "development") {
       makeInspectable(rootStore as Record<string, unknown>);
     }
-    return React.createElement(
+    return createElement(
       StoreContext.Provider,
       {
-        value: rootStore,
+        value: customStore || rootStore,
       },
       children
     );
   };
 
   const useStore = (): GenRootStoreModel => {
-    const value = React.useContext(StoreContext);
+    const value = useContext(StoreContext);
     if (!value) {
       throw new Error("useStore must be used within a StoreProvider. Please, add context!");
     }
     return value;
-  };
-
-  // type MapStore<GenReturn> = (store: GenRootStoreModel) => GenReturn;
-  type MapStore<GenReturn> = (store: any) => GenReturn;
-
-  /**
-       * It is a simple property picker, same as
-       * redux selector (memoization is handled by MST itself)
-       * **NOTE!** Define a mapStore function beforehand.
-       * Pass it to useInject, the latter will select a property from a global store
-       * @example
-        const mapStore = (
-          store // or destructure it
-        ) => {
-          return {
-              someDataForComponent: store.some.deep.property.we.need
-          }
-        };
-        ...
-        const {someDataForComponent} = useInject(mapStore);
-       */
-  const useInject = <GenReturn>(mapStore: MapStore<GenReturn>) => {
-    const store = useStore();
-    return mapStore(store);
   };
 
   const storeStruct = {
@@ -109,7 +83,6 @@ export const configureStore = <
     StoreContext,
     StoreProvider,
     useStore,
-    useInject,
   };
 
   return storeStruct;
